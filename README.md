@@ -1,6 +1,6 @@
-# Marker Manager
+# Maps Manager
 
-Manage your markers easy on Google, Mapbox, Bing or MapQuest maps.
+Create maps easy.
 
 ## Getting Started
 Download the [production version][min] or the [development version][max].
@@ -11,19 +11,14 @@ Download the [production version][min] or the [development version][max].
 In your web page:
 
 ```html
-<script src="jquery.js"></script>
-<script src="dist/mapsmanager.min.js"></script>
-<script>
-jQuery(function($) {
-  $.awesome(); // "awesome"
-});
-</script>
+<div data-mapsmanager="googlemap" style="height:200px"></div>
+<!-- include once // -->
+<script src="/path/to/jquery.min.js"></script>
+<script src="/path/to/mapsmanager.min.js"></script>
+<!-- // include once -->
 ```
 
 ## Documentation
-_(Coming soon)_
-
-## Examples
 _(Coming soon)_
 
 ## Release History
