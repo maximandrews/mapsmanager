@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+  {% include head.html %}
+
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+
+  <body>
+
+    {% include header.html %}
+
+    <div class="full-size">
+      <div class="full-size make-fixed">
+        <div  class="map-div"
+              {% if page.maps contains "," %}
+              data-mapsmanager="mapsmanager"
+              data-maps="{{ page.maps }}"
+              {% else %}
+              data-mapsmanager="{{ page.maps }}"
+              {% endif %}></div>
+      </div>
+      <div class="full-size">
+        <div class="title-wrapper wrapper">
+          <div class="splash-box">
+            {% if page.headerLogo %}
+            <span class="icon icon--logo">
+              <svg><use xlink:href="#mapsManagerLogo"/></svg>
+            </span>
+            {% endif %}
+            <h1>{% if page.secondTitle %}{{ page.secondTitle }}{% else %}{{ page.title }}{% endif%}</h1>
+            <h3>{{ page.description }}</h3>
+          </div>
+          <a class="icon-wrapper" href="#content">
+            <span class="icon icon--down">
+              <svg><use xlink:href="#scrollDown"/></svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="main-content">
+      <div id="content" class="content-body wrapper center-text">
+        <div class="code-example">
+        {{ content }}
+        </div>
+      </div>
+    </div>
+
+    {% include footer.html %}
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="/js/jquery/dist/jquery.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) js/lib/mapsmanager.min.js -->
+        <script src="/js/lib/mapsmanager.min.js"></script>
+        <script src="/js/script.min.js"></script>
+        <!-- endbuild -->
+
+  </body>
+
+</html>
