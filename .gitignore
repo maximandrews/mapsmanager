@@ -25,6 +25,9 @@ nbproject
 Thumbs.db
 
 # Folders to ignore
+.sass-cache
+.tmp
+
 bower_components
 node_modules
 gh-pages
