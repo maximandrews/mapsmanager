@@ -1,0 +1,21 @@
+# Build settings
+markdown:             kramdown
+highlighter:          pygments
+permalink:            ordinal
+source:               docs
+destination:          gh-pages
+encoding:             utf-8
+host:                 0.0.0.0
+port:                 5000
+
+# Site settings
+url:                  http://openmania.github.io/markermanager
+repository:           https://github.com/openmania/markermanager
+version:              1.0.0
+
+# Vars
+
+title:                Maps Manager
+email:                open.mania@valutas.info
+github_username:      openmania
+twitter_username:     openmaniame
