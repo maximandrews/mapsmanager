@@ -37,8 +37,8 @@ This will output nice Google Map like this:
 For more examples and options see Maps Manager <a href="{{ site.url }}/documentation/">documentation</a>.
 </div>
 
-<div class="center-text github-btns" markdown="1">https://github.com/openmania/mapsmanager/releases/download/v1.0.0/mapsmanager-1.0.0.tar.gz
-  [Download .zip](https://github.com/{{ site.github_username }}/mapsmanager/releases/download/v1.0.0/mapsmanager-1.0.0.zip){:target="_github_window_zip"}
-  [Download .tar.gz](https://github.com/{{ site.github_username }}/mapsmanager/releases/download/v1.0.0/mapsmanager-1.0.0.tar.gz){:target="_github_window_tar_gz"}
+<div class="center-text github-btns" markdown="1">
+  [Download .zip](https://github.com/{{ site.github_username }}/mapsmanager/releases/download/v1.0.0/mapsmanager-v1.0.0.zip){:target="_github_window_zip"}
+  [Download .tar.gz](https://github.com/{{ site.github_username }}/mapsmanager/releases/download/v1.0.0/mapsmanager-v1.0.0.tar.gz){:target="_github_window_tar_gz"}
   [View source code on GitHub](https://github.com/{{ site.github_username }}/mapsmanager){:target="_github_window_source"}
 </div>
