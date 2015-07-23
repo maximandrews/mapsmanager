@@ -26,6 +26,7 @@ Thumbs.db
 
 # Folders to ignore
 .sass-cache
+.ghpages
 .tmp
 
 bower_components

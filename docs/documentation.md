@@ -4,7 +4,7 @@ title: Documentation
 sort: 2
 permalink: /documentation/
 description: Discover Maps Manager options
-maps: mapsmanager
+maps: mapbox,googlemap,bingmap
 ---
 
 ## Table of Contents

@@ -52,3 +52,25 @@
   </div>
 
 </footer>
+
+    <!-- build:cdnjquery js/lib/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js(docs) js/docs.min.js -->
+    <script src="js/docs.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js(.) js/lib/mapsmanager.min.js -->
+    <!-- inject:mapsmanager -->
+    <script src="src/__common.js"></script>
+    <script src="src/_bingmap.js"></script>
+    <script src="src/_googlemap.js"></script>
+    <script src="src/_leaflet.js"></script>
+    <script src="src/_mapquest.js"></script>
+    <script src="src/manager.js"></script>
+    <script src="src/mapsmanager.js"></script>
+    <!-- endinject -->
+    <!-- endbuild -->

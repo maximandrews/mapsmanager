@@ -2,17 +2,14 @@
 
 module.exports = function(grunt) {
 
+  var bower                     = grunt.file.readJSON('bower.json')
+  var pgs                       = grunt.file.readYAML('_config.yml')
+
   // Project configuration.
   grunt.initConfig({
     // Metadata.
     pkg: grunt.file.readJSON('package.json'),
-    jqueryjson: {
-      dependencies: {
-        jquery: '>=2.1.x'
-      },
-      docs: 'https://github.com/openmania/mapsmanager/blob/master/README.md',
-      demo: 'http://openmania.github.io/mapsmanager'
-    },
+    pgs: pgs,
     banner: '/*!\n' +
             ' * <%= pkg.title %> v<%= pkg.version %> (<%= pkg.homepage %>)\n' +
             ' * <%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -25,15 +22,15 @@ module.exports = function(grunt) {
       gruntfile: { src: 'Gruntfile.js' },
       core: {
         options: { jshintrc: 'src/.jshintrc' },
-        src: 'src/**/*.js'
+        src: [ 'src/*.js', 'docs/js/*.js' ]
       },
       lib: {
         options: { jshintrc: 'src/.jshintrc' },
-        src: 'src/lib/*.js'
+        src: 'src/*.js'
       },
       docs: {
         options: { jshintrc: 'src/.jshintrc' },
-        src: 'src/docs/*.js'
+        src: 'docs/js/*.js'
       },
       test: { src: 'test/**.js' }
     },
@@ -57,64 +54,34 @@ module.exports = function(grunt) {
 
     clean: {
       lib: {
-        files: [{ force: true, src: 'dist' }]
+        force: true,
+        src: 'dist'
       },
-      docsall: {
-        files: [{ force: true, src: [ 'docs/js/*', '!docs/js/*.json'] }]
-      },
-      docslib: {
-        files: [{ force: true, src: 'docs/js/lib' }]
-      },
-      docs: {
-        files: [{ force: true, src: [ 'docs/js/*.js', 'docs/js/src' ] }]
+      ghpages: {
+        force: true,
+        src: [ '<%= pgs.destination %>/*', '!.git' ]
       },
       tmp: {
-        files: [{ force: true, src: '.tmp' }]
+        force: true,
+        src: [ '.tmp', '.sass-cache', '.ghpages' ]
+      },
+      css: {
+        src: '<%= pgs.destination %>/css/main.css'
       }
     },
 
     copy: {
-      core: {
-        files: [
-          { expand: true, cwd: 'src/lib/', src: '*.js', dest: '.tmp/lib/src/' },
-          { expand: true, cwd: 'src/docs/', src: '*.js', dest: '.tmp/docs/src/' }
-        ]
-      },
-      srclib: {
-        expand: true,
-        cwd: 'src/lib/',
-        src: '*.js',
-        dest: '.tmp/lib/src/'
-      },
-      srcdocs: {
-        expand: true,
-        cwd: 'src/docs/',
-        src: '*.js',
-        dest: '.tmp/docs/src/'
-      },
       lib: {
-        files: [
-          { expand: true, cwd: '.tmp/lib/', src: '**',  dest: 'dist/' },
-          { expand: true, cwd: '.tmp/',     src: 'lib/**', dest: 'docs/js/' }
-        ]
+        expand: true,
+        cwd: 'src/',
+        src: '*.js',
+        dest: 'dist/src/'
       },
       docs: {
         expand: true,
-        cwd: '.tmp/docs/',
-        src: '**',
-        dest: 'docs/js/'
-      }
-    },
-
-    entrypoint: {
-      options: {
-        banner: '<%= banner %>'
-      },
-      lib: {
-        files: [{
-          src: '<%= jshint.core.src %>',
-          dest: '<%= pkg.main %>'
-        }]
+        cwd: 'docs/',
+        src: [ '**', '!js/docs.js' ],
+        dest: '.ghpages/'
       }
     },
 
@@ -124,9 +91,9 @@ module.exports = function(grunt) {
         stripBanners: true
       },
       lib: {
-        src: 'src/lib/**.js',
+        src: '<%= copy.lib.dist %>/**.js',
         dest: 'dist/<%= pkg.name %>.js'
-      },
+      }
     },
 
     uglify: {
@@ -139,18 +106,134 @@ module.exports = function(grunt) {
         sourceMap: true
       },
       lib: {
-        options: {
-          exceptionsFiles: ['src/lib_exceptions.json']
-        },
-        src: ['.tmp/lib/src/**.js'],
-        dest: '.tmp/lib/<%= pkg.name %>.min.js'
+        src: '<%= copy.lib.dest %>/**.js',
+        dest: 'dist/<%= pkg.name %>.min.js'
+      }
+    },
+
+    // Add vendor prefixed styles
+    autoprefixer: {
+      options: {
+        browsers: ['last 1 version'],
+        map: true
+      },
+      dev: {
+        files: [{
+          expand: true,
+          cwd: '.tmp/css/',
+          src: '{,*/}*.css',
+          dest: '.tmp/css/'
+        }]
       },
       docs: {
-        options: {
-          exceptionsFiles: ['src/docs_exceptions.json']
+        files: [{
+          expand: true,
+          cwd: '<%= pgs.destination %>/css/',
+          src: '{,*/}*.css',
+          dest: '<%= pgs.destination %>/css/'
+        }]
+      }
+    },
+
+    // Renames files for browser caching purposes
+    filerev: {
+      dist: {
+        src: [
+          '<%= pgs.destination %>/js/{,*/}*.js',
+          '<%= pgs.destination %>/css/{,*/}*.css',
+          '<%= pgs.destination %>/i/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+        ]
+      }
+    },
+
+    // Reads HTML for usemin blocks to enable smart builds that automatically
+    // concat, minify and revision files. Creates configurations in memory so
+    // additional tasks can operate on them
+    useminPrepare: {
+      html: [ 'docs/_includes/head.html', 'docs/_includes/footer.html' ],
+      options: {
+        dest: 'gh-pages/',
+        flow: {
+          html: {
+            steps: {
+              js: [ 'concat', 'uglifyjs' ],
+              css: [ 'cssmin' ]
+            },
+            post: {}
+          }
+        }
+      }
+    },
+
+    usemin: {
+      html: [ '<%= pgs.destination %>/{,*/}*.html'    ],
+      css:  [ '<%= pgs.destination %>/css/{,*/}*.css' ],
+      js:   [ '<%= pgs.destination %>/js/{,*/}*.js'   ],
+      options: {
+        assetsDirs: [
+          '<%= pgs.destination %>/',
+          '<%= pgs.destination %>/i',
+          '<%= pgs.destination %>/js',
+          '<%= pgs.destination %>/css'
+        ],
+        patterns: {
+          js: [[/\'(i\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))\'/g, 'Replacing references to images', null, function (file) {
+            return pgs.url + '/' + file;
+          }],[/\"(i\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))\"/g, 'Replacing references to images', null, function (file) {
+            return pgs.url + '/' + file;
+          }]],
+          css: [[/(i\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images', null, function (file) {
+            return pgs.url + '/' + file;
+          }]],
+          html: [[/\"((i|css|js)\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg|css|js|json))\"/g, 'Replacing references to assets', null, function (file) {
+            return pgs.url + '/' + file;
+          }]]
         },
-        src: ['.tmp/docs/src/**.js'],
-        dest: '.tmp/docs/script.min.js'
+        blockReplacements: {
+          cdnjquery: function (block) {
+            return '<script src="https://ajax.googleapis.com/ajax/libs/jquery/' + bower.dependencies.jquery + '/jquery.min.js"></script>';
+          }
+        }
+      }
+    },
+
+    imagemin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= pgs.destination %>/i',
+          src: '{,*/}*.{png,jpg,jpeg,gif}',
+          dest: '<%= pgs.destination %>/i'
+        }]
+      }
+    },
+
+    svgmin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= imagemin.dist.dest %>',
+          src: '{,*/}*.svg',
+          dest: '<%= imagemin.dist.dest %>'
+        }]
+      }
+    },
+
+    htmlmin: {
+      docs: {
+        options: {
+          removeComments: true,
+          collapseWhitespace: true,
+          conservativeCollapse: true,
+          collapseBooleanAttributes: true,
+          removeCommentsFromCDATA: true
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= pgs.destination %>/',
+          src: '{,*/}*.html',
+          dest: '<%= pgs.destination %>/'
+        }]
       }
     },
 
@@ -164,12 +247,24 @@ module.exports = function(grunt) {
         },
         expand: true,
         cwd: 'dist/',
-        src: ['**', '!<%= entrypoint.lib.dest %>', '!**/*.zip']
+        src: ['**', '!**/*.zip']
       }
     },
 
     jekyll: {
-      docs: {}
+      build: {
+        options: {
+          config: '_config.yml',
+          raw:  'source: .ghpages\n'
+        }
+      },
+      dev: {
+        options: {
+          config: '_config.yml',
+          raw:  'destination: .tmp\n' +
+                'url: \n\n'
+        }
+      }
     },
 
     connect: {
@@ -184,8 +279,9 @@ module.exports = function(grunt) {
         options: {
           middleware: function (connect) {
             return [
-              connect().use('/js', connect.static('./bower_components')),
-              connect.static('gh-pages')
+              connect().use('/bower_components', connect.static('./bower_components')),
+              connect().use('/src', connect.static('./src')),
+              connect.static('.tmp')
             ];
           }
         }
@@ -195,42 +291,53 @@ module.exports = function(grunt) {
     // Automatically inject Bower components into the HTML file
     wiredep: {
       docs: {
-        src: ['docs/_layouts/index.html', 'docs/_layouts/default.html'],
+        src: [ 'docs/_includes/**.html' ],
         fileTypes: {
           html: {
             replace: {
               js: function (filePath) {
-                return '<script src="/js' + filePath.replace('../../bower_components/', '/') + '"></script>';
-              },
-              css: '<link rel="stylesheet" href="css/{{filePath}}" />'
+                return '<script src="' + filePath.replace('../../', '') + '"></script>';
+              }
             }
           }
         }
       }
     },
 
+    inject: {
+      docs: {
+        src: 'src/**.js',
+        dest: 'docs/_includes/**.html',
+        type: 'mapsmanager',
+        template: '<script src="{{filePath}}"></script>'
+      }
+    },
+
     watch: {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
-        tasks: ['jshint:gruntfile']
+        tasks: [ 'jshint:gruntfile' ]
       },
       lib: {
-        files: ['src/lib/**.js', 'src/lib_**.json'],
-        tasks: [ 'rebuild:lib' ]
+        files: [ 'src/**.js' ],
+        tasks: [ 'jshint:lib', 'jscs:lib' ]
       },
       docs: {
-        files: ['src/docs/**.js', 'src/docs_**.json'],
-        tasks: [ 'rebuild:docs' ]
-      },
-      jekyll: {
         options: { livereload: '<%= connect.options.livereload %>' },
-        files: ['docs/**/**', '_config.yml'],
-        tasks: [ 'jekyll:docs' ]
+        files: [ 'docs/**/**', '_config.yml' ],
+        tasks: [ 'jshint:docs', 'jscs:docs', 'jekyll:dev', 'autoprefixer:dev' ]
+      }
+    },
+
+    exec: {
+      gitpush: {
+        cwd: '<%= pgs.destination %>/',
+        cmd: 'git pull origin gh-pages && git add -A && git commit -am "yet another documentation update" && git push origin gh-pages'
       }
     },
 
     qunit: {
-      files: ['test/**/*.html']
+      files: [ 'test/**/*.html' ]
     }
   });
 
@@ -239,57 +346,53 @@ module.exports = function(grunt) {
   grunt.loadTasks('grunt');
   require('time-grunt')(grunt);
 
+  // dev
+  // build (lib)
+  // publish (docs)
+
   // Default task.
-  grunt.registerTask('build', [
+  grunt.registerTask('dev', [
     'jshint:core',
     'jscs:core',
-    'clean:lib',
-    'clean:docsall',
     'clean:tmp',
-    'copy:core',
-    'concat:lib',
-    'uglify:lib',
-    'uglify:docs',
-    // 'closurecompiler:lib',
-    // 'closurecompiler:docs',
-    'copy:lib',
-    'copy:docs',
-    'clean:tmp',
-    'entrypoint:lib',
-    'wiredep:docs'
+    'wiredep',
+    'inject',
+    'jekyll:dev',
+    'autoprefixer:dev',
+    'connect',
+    'watch'
   ]);
 
-  grunt.registerTask('rebuild:lib', [
+  grunt.registerTask('build', [
     'jshint:lib',
     'jscs:lib',
     'clean:lib',
-    'clean:docslib',
-    'clean:tmp',
-    'copy:srclib',
     'concat:lib',
-    'uglify:lib',
-    // 'closurecompiler:lib',
-    'copy:lib',
-    'clean:tmp'
+    'copy',
+    'uglify:lib'
   ]);
 
-  grunt.registerTask('rebuild:docs', [
+  grunt.registerTask('publish', [
+    'clean:tmp',
+    'clean:ghpages',
     'jshint:docs',
     'jscs:docs',
-    'clean:docs',
-    'clean:tmp',
-    'copy:srcdocs',
-    'uglify:docs',
-    // 'closurecompiler:docs',
+    'wiredep',
+    'inject',
     'copy:docs',
+    'useminPrepare',
+    'jekyll:build',
+    'concat',
+    'uglify',
+    'autoprefixer:docs',
+    'cssmin',
+    'clean:css',
+    'imagemin',
+    'svgmin',
+    'filerev',
+    'usemin',
+    'htmlmin',
     'clean:tmp',
-    'wiredep:docs'
-  ]);
-
-  grunt.registerTask('docs', [
-    'build',
-    'jekyll:docs',
-    'connect:docs',
-    'watch'
+    'exec'
   ]);
 };

@@ -35,7 +35,7 @@
   MapQuest.VERSION  = '0.0.1'
 
   MapQuest.DEFAULTS = {
-    mapIcon       :         '/i/mapquest35.png',
+    mapIcon       :         'i/mapquest35.png',
     autoSetup     :         true
   }
 

@@ -5,11 +5,9 @@ permalink:            ordinal
 source:               docs
 destination:          gh-pages
 encoding:             utf-8
-host:                 0.0.0.0
-port:                 5000
 
 # Site settings
-url:                  http://openmania.github.io/mapsmanager
+url:                  /mapsmanager
 repository:           https://github.com/openmania/mapsmanager
 version:              1.0.0
 

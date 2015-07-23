@@ -3,7 +3,7 @@ layout: default
 title: About
 sort: 4
 permalink: /about/
-description: More project information
+description: Project information
 maps: googlemap
 ---
 
