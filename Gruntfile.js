@@ -91,7 +91,7 @@ module.exports = function(grunt) {
         stripBanners: true
       },
       lib: {
-        src: '<%= copy.lib.dist %>/**.js',
+        src: '<%= copy.lib.dest %>/**.js',
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
@@ -378,9 +378,9 @@ module.exports = function(grunt) {
     'jshint:lib',
     'jscs:lib',
     'clean:lib',
-    'concat:lib',
     'copy',
-    'uglify:lib'
+    'concat',
+    'uglify'
   ]);
 
   grunt.registerTask('publish', [
