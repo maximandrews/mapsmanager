@@ -2,6 +2,8 @@
 
 Create maps easy.
 
+[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+
 ## Getting Started
 Download the [production version][min] or the [development version][max].
 

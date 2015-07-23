@@ -35,7 +35,7 @@
   BingMap.VERSION  = '0.0.1'
 
   BingMap.DEFAULTS = {
-    mapIcon       :         '/i/bingmap35.png',
+    mapIcon       :         'i/bingmap35.png',
     autoSetup     :         true
   }
 

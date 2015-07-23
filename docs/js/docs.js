@@ -2,9 +2,9 @@ $(function () {
   'use strict';
 
   var allMaps                   = $('[data-mapsmanager]')
-  allMaps.data('bingmapkey',  ['AhbY6YeowkXz1', 'ljukcuAt5A_prNaaADXcUJ_Wa', 'IRgKBkKNCO6uOVo7CJHQsG-T9m'].join(''))
-  allMaps.data('mapquestkey', ['Fmjtd%7Cl', 'uu82qu820%2C', '7x%3Do5-94ta00'].join(''))
-  allMaps.data('mapboxkey',   ['pk.eyJ1IjoibW', 'F4c3Ryb20iLCJhIjoiWlZXMWg5Q', 'SJ9.wVPqsSnUL7wtNSLYGFNVSw'].join(''))
+  allMaps.data('bingmapkey',    ['AhbY6YeowkXz1', 'ljukcuAt5A_prNaaADXcUJ_Wa',    'IRgKBkKNCO6uOVo7CJHQsG-T9m'].join(''))
+  allMaps.data('mapquestkey',   ['Fmjtd%7Cl',     'uu82qu820%2C',                 '7x%3Do5-94ta00'].join(''))
+  allMaps.data('mapboxkey',     ['pk.eyJ1IjoibW', 'F4c3Ryb20iLCJhIjoiWlZXMWg5Q',  'SJ9.wVPqsSnUL7wtNSLYGFNVSw'].join(''))
 
   $('a[href*=#]:not([href=#])').click(function () {
     if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {

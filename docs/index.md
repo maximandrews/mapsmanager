@@ -4,11 +4,11 @@ title: Getting Started
 secondTitle: Maps Manager
 headerLogo: 1
 sort: 1
-description: Creating maps now made easy
+description: Create maps easy
 maps: mapbox,googlemap,bingmap
 ---
 
-<div class="pph center-again" markdown="1">
+<div class="pph center-text" markdown="1">
 # Create maps easy
 
 ### The only thing you need to know now is HTML.
@@ -33,11 +33,11 @@ This will output nice Google Map like this:
 <div data-mapsmanager="googlemap" style="height:200px"></div>
 </div>
 
-<div class="pph center-again">
+<div class="pph center-text">
 For more examples and options see Maps Manager <a href="/documentation/">documentation</a>.
 </div>
 
-<div class="center-again github-btns" markdown="1">
+<div class="center-text github-btns" markdown="1">
   [Download .zip](https://github.com/{{ site.github_username }}/mapsmanager){:target="_github_window_zip"}
   [Download .tar.gz](https://github.com/{{ site.github_username }}/mapsmanager){:target="_github_window_tar_gz"}
   [View source code on GitHub](https://github.com/{{ site.github_username }}/mapsmanager){:target="_github_window_source"}

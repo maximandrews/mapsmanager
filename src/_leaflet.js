@@ -51,7 +51,7 @@
   LeafLet.VERSION  = '0.0.1'
 
   LeafLet.DEFAULTS = {
-    mapIcon       :         '/i/mapbox35.png',
+    mapIcon       :         'i/mapbox35.png',
     autoSetup     :         true
   }
 

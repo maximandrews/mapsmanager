@@ -35,7 +35,7 @@
   GoogleMap.VERSION  = '0.0.1'
 
   GoogleMap.DEFAULTS = {
-    mapIcon       :         '/i/googlemap35.png',
+    mapIcon       :         'i/googlemap35.png',
     autoSetup     :         true
   }
 

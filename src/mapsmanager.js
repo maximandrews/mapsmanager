@@ -55,7 +55,7 @@
   MapsManager.VERSION  = '0.0.1'
 
   MapsManager.DEFAULTS = {
-    'marker-icon': '/i/defaultIcon.png'
+    'marker-icon': 'i/defaultIcon.png'
   }
 
   MapsManager.POINT = {
