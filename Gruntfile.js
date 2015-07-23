@@ -238,16 +238,27 @@ module.exports = function(grunt) {
     },
 
     compress: {
-      core: {
+      options: {
+        level: 9,
+        pretty: true
+      },
+      corezip: {
         options: {
-          archive: 'dist/mapsmanager-<%= pkg.version %>.zip',
-          mode: 'zip',
-          level: 9,
-          pretty: true
+          archive: 'dist/mapsmanager-v<%= pkg.version %>.zip',
+          mode: 'zip'
         },
         expand: true,
         cwd: 'dist/',
-        src: ['**', '!**/*.zip']
+        src: ['**', '!**/*.zip', '!**/*.tar.gz']
+      },
+      coretargz: {
+        options: {
+          archive: 'dist/mapsmanager-v<%= pkg.version %>.tar.gz',
+          mode: 'tgz'
+        },
+        expand: true,
+        cwd: 'dist/',
+        src: ['**', '!**/*.zip', '!**/*.tar.gz']
       }
     },
 
