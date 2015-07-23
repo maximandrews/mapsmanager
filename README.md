@@ -21,7 +21,7 @@ In your web page:
 ```
 
 ## Documentation
-_(Coming soon)_
+See project [website](http://openmania.github.io/mapsmanager/).
 
 ## Release History
 _(Nothing yet)_
